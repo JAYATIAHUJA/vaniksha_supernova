@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaniksha - Erosion Risk Assessment</title>
+    <style>
+        :root {
+            --primary-green: #2e7d32;
+            --light-green: #4caf50;
+            --very-light-green:rgb(144, 145, 144);
+            --dark-green: #1b5e20;
+            --accent-green: #81c784;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--very-light-green);
+            color: #333;
+        }
+        
+        .header {
+            background-color: var(--primary-green);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 1rem auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            padding: 1rem;
+        }
+        
+        #map {
+            height: 500px;
+            width: 100%;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        #erosion-data {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: white;
+            padding: 12px;
+            border-radius: 5px;
+            z-index: 10;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            border-left: 4px solid var(--light-green);
+        }
+        
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ddd;
+            background-color: var(--very-light-green);
+            margin-bottom: 10px;
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 20px;
+            transition: 0.3s;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark-green);
+        }
+        
+        .tab button:hover {
+            background-color: var(--accent-green);
+            color: white;
+        }
+        
+        .tab button.active {
+            background-color: var(--primary-green);
+            color: white;
+        }
+        
+        .tabcontent {
+            display: none;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            animation: fadeEffect 1s;
+        }
+        
+        @keyframes fadeEffect {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+        
+        #MapTab {
+            display: block;
+        }
+        
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .table td, .table th {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        
+        .table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: var(--light-green);
+            color: white;
+        }
+        
+        button.refresh-btn {
+            background-color: var(--light-green);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 10px 0;
+            transition: background-color 0.3s;
+        }
+        
+        button.refresh-btn:hover {
+            background-color: var(--dark-green);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: var(--primary-green);
+            color: white;
+            margin-top: 2rem;
+        }
+        
+        .risk-low {
+            background-color: #e6ffe6;
+        }
+        
+        .risk-moderate {
+            background-color: #fff2e6;
+        }
+        
+        .risk-high {
+            background-color: #ffe6e6;
+        }
+        
+        .risk-very-high {
+            background-color: #ffcccc;
+        }
+        
+        /* Plantation cards styling */
+        .plantation-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .plantation-card {
+            width: 300px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .plantation-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            padding: 12px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .card-content {
+            padding: 15px;
+        }
+        
+        .card-low .card-header {
+            background-color: #2e7d32;
+        }
+        
+        .card-moderate .card-header {
+            background-color: #ff9800;
+        }
+        
+        .card-high .card-header {
+            background-color: #f44336;
+        }
+        
+        .card-very-high .card-header {
+            background-color: #b71c1c;
+        }
+        
+        .plant-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .plant-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .plant-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .risk-selector {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: var(--very-light-green);
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .risk-selector select {
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Vanishka</h1>
+        <p>Erosion Risk Assessment Tool</p>
+    </div>
+    
+    <div class="container">
+        <div class="tab">
+            <button class="tablinks active" onclick="openTab(event, 'MapTab')">Interactive Map</button>
+            <button class="tablinks" onclick="openTab(event, 'ResultsTab')">Results History</button>
+            <button class="tablinks" onclick="openTab(event, 'PlantationsTab')">Recommended Plantations</button>
+        </div>
+        
+        <div id="MapTab" class="tabcontent">
+            <div id="map">
+                <div id="erosion-data"></div>
+            </div>
+            <p style="text-align: center; margin-top: 15px;">Drag the marker or click on the map to check erosion risk at different locations</p>
+        </div>
+        
+        <div id="ResultsTab" class="tabcontent">
+            <h3>Erosion Risk Assessment History</h3>
+            <button class="refresh-btn" onclick="refreshResults()">Refresh Results</button>
+            <div id="results-container">
+                <p>No erosion data collected yet.</p>
+            </div>
+        </div>
+        
+        <div id="PlantationsTab" class="tabcontent">
+            <h3>Recommended Plantations Based on Erosion Risk</h3>
+            <div class="risk-selector">
+                <label for="risk-level">Select Erosion Risk Level:</label>
+                <select id="risk-level" onchange="showPlantations()">
+                    <option value="all">All Risk Levels</option>
+                    <option value="low">Low</option>
+                    <option value="moderate">Moderate</option>
+                    <option value="high">High</option>
+                    <option value="very-high">Very High</option>
+                </select>
+            </div>
+            <div id="plantations-container" class="plantation-cards">
+                <!-- Cards will be loaded here -->
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>© 2025 Vanishka - Erosion Risk Assessment Tool</p>
+    </div>
+    
+    <script>
+        // Store erosion history data
+        let erosionHistory = [];
+        
+        // Plantation recommendations based on erosion risk
+        const plantationRecommendations = {
+            'Low': [
+                'Bamboo (Bambusa spp.)',
+                'Teak (Tectona grandis)',
+                'Eucalyptus (Eucalyptus spp.)',
+                'Poplar (Populus spp.)',
+                'Mahogany (Swietenia spp.)'
+            ],
+            'Moderate': [
+                'Vetiver Grass (Chrysopogon zizanioides)',
+                'Neem (Azadirachta indica)',
+                'Casuarina (Casuarina equisetifolia)',
+                'Acacia (Acacia spp.)',
+                'Silver Oak (Grevillea robusta)'
+            ],
+            'High': [
+                'Jatropha (Jatropha curcas)',
+                'Subabul (Leucaena leucocephala)',
+                'Indian Gooseberry (Phyllanthus emblica)',
+                'Karanj (Pongamia pinnata)',
+                'Gliricidia (Gliricidia sepium)'
+            ],
+            'Very High': [
+                'Vetiver Grass (Chrysopogon zizanioides)',
+                'Elephant Grass (Pennisetum purpureum)',
+                'Switch Grass (Panicum virgatum)',
+                'Bamboo (Bambusa spp.)',
+                'Lemon Grass (Cymbopogon citratus)'
+            ]
+        };
+        
+        // Function to load plantation recommendations
+        function showPlantations() {
+            const selectedRisk = document.getElementById('risk-level').value;
+            const container = document.getElementById('plantations-container');
+            container.innerHTML = '';
+            
+            // If "all" is selected, show all risk levels
+            if (selectedRisk === 'all') {
+                Object.keys(plantationRecommendations).forEach(risk => {
+                    addPlantationCard(risk, container);
+                });
+            } else {
+                // Convert selected value to proper case for lookup
+                const formattedRisk = selectedRisk.split('-').map(word => 
+                    word.charAt(0).toUpperCase() + word.slice(1)
+                ).join(' ');
+                
+                addPlantationCard(formattedRisk, container);
+            }
+        }
+        
+        // Function to add a plantation card
+        function addPlantationCard(risk, container) {
+            const riskClass = risk.toLowerCase().replace(' ', '-');
+            const plants = plantationRecommendations[risk];
+            
+            const card = document.createElement('div');
+            card.className = `plantation-card card-${riskClass}`;
+            
+            let plantListHTML = '';
+            plants.forEach(plant => {
+                plantListHTML += `<li>${plant}</li>`;
+            });
+            
+            card.innerHTML = `
+                <div class="card-header">
+                    ${risk} Risk Zone
+                </div>
+                <div class="card-content">
+                    <p><strong>Recommended Plant Species:</strong></p>
+                    <ul class="plant-list">
+                        ${plantListHTML}
+                    </ul>
+                </div>
+            `;
+            
+            container.appendChild(card);
+        }
+        
+        // Function to open tabs
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+            
+            // Load results when switching to Results tab
+            if (tabName === 'ResultsTab') {
+                refreshResults();
+            }
+            
+            // Load plantations when switching to Plantations tab
+            if (tabName === 'PlantationsTab') {
+                showPlantations();
+            }
+        }
+        
+        // Function to get erosion data (mocked)
+        function getErosionData(lat, lng) {
+            // Mocking the erosion risk for demonstration
+            const zones = ["Low", "Moderate", "High", "Very High"];
+            const risk_level = zones[Math.floor(Math.random() * zones.length)];
+            
+            // Log the result to our history
+            const timestamp = new Date().toISOString();
+            erosionHistory.push({
+                Latitude: lat,
+                Longitude: lng,
+                'Risk Level': risk_level,
+                Timestamp: timestamp
+            });
+            
+            return risk_level;
+        }
+        
+        // Function to get color based on risk level
+        function getColorForRisk(risk) {
+            switch(risk) {
+                case 'Low': return 'green';
+                case 'Moderate': return 'orange';
+                case 'High': return 'orangered';
+                case 'Very High': return 'red';
+                default: return 'black';
+            }
+        }
+        
+        // Function to update the erosion data display
+        function updateErosionData(lat, lng) {
+            try {
+                // Get erosion risk level
+                const erosionLevel = getErosionData(lat, lng);
+                
+                // Update the info box
+                document.getElementById('erosion-data').innerHTML = `
+                    <div style="font-family: Arial, sans-serif;">
+                        <h3 style="margin-top: 0;">Erosion Risk</h3>
+                        <p><b>Latitude:</b> ${lat.toFixed(4)}</p>
+                        <p><b>Longitude:</b> ${lng.toFixed(4)}</p>
+                        <p><b>Risk Level:</b> <span style="color: ${getColorForRisk(erosionLevel)}; font-weight: bold;">${erosionLevel}</span></p>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error fetching erosion data:', error);
+                document.getElementById('erosion-data').innerHTML = `
+                    <div style="color: red;">Error fetching erosion data</div>
+                `;
+            }
+        }
+        
+        // Function to refresh results table
+        function refreshResults() {
+            const resultsContainer = document.getElementById('results-container');
+            
+            if (erosionHistory.length === 0) {
+                resultsContainer.innerHTML = "<p>No erosion data collected yet.</p>";
+                return;
+            }
+            
+            // Build the table
+            let tableHTML = `
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Latitude</th>
+                        <th>Longitude</th>
+                        <th>Risk Level</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+            `;
+            
+            // Add rows
+            erosionHistory.forEach(item => {
+                const formattedTimestamp = new Date(item.Timestamp).toLocaleString();
+                const riskClass = `risk-${item['Risk Level'].toLowerCase().replace(' ', '-')}`;
+                
+                tableHTML += `
+                <tr>
+                    <td>${parseFloat(item.Latitude).toFixed(4)}</td>
+                    <td>${parseFloat(item.Longitude).toFixed(4)}</td>
+                    <td class="${riskClass}">${item['Risk Level']}</td>
+                    <td>${formattedTimestamp}</td>
+                </tr>
+                `;
+            });
+            
+            tableHTML += `
+                </tbody>
+            </table>
+            `;
+            
+            resultsContainer.innerHTML = tableHTML;
+        }
+        
+        // Initialize the map once Google Maps API is loaded
+        function initMap() {
+            const defaultLat = 20.5937;
+            const defaultLng = 78.9629;
+            const defaultZoom = 5;
+            
+            const mapOptions = {
+                zoom: defaultZoom,
+                center: { lat: defaultLat, lng: defaultLng },
+                mapTypeId: google.maps.MapTypeId.TERRAIN
+            };
+            
+            const map = new google.maps.Map(document.getElementById('map'), mapOptions);
+            
+            const marker = new google.maps.Marker({
+                position: { lat: defaultLat, lng: defaultLng },
+                map: map,
+                draggable: true,
+                title: 'Drag me to check erosion risk'
+            });
+            
+            // Update erosion data when marker is dragged
+            marker.addListener('dragend', function() {
+                const position = marker.getPosition();
+                updateErosionData(position.lat(), position.lng());
+            });
+            
+            // Update erosion data when map is clicked
+            map.addListener('click', function(event) {
+                marker.setPosition(event.latLng);
+                updateErosionData(event.latLng.lat(), event.latLng.lng());
+            });
+            
+            // Initial erosion data fetch
+            updateErosionData(defaultLat, defaultLng);
+        }
+        
+        // Load Google Maps API and initialize the map
+        (function loadMapScript() {
+            const script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyD3OuoKps_ovSSmGaqW2-db7Vk9OFATccw&callback=initMap`;
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        })();
+    </script>
+</body>
+</html>
