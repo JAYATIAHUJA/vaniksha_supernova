@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Vaniksha</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body class="light-mode">
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="logo">
+                <h1>Vaniksha</h1>
+            </div>
+            <div class="theme-toggle">
+                <button id="themeToggle" aria-label="Toggle theme">
+                    <span class="sun-icon">☀️</span>
+                    <span class="moon-icon">🌙</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>Welcome Back</h1>
+                <p>Sign in to continue to your account</p>
+            </div>
+
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="role">Select Role</label>
+                    <select id="role" name="role" required>
+                        <option value="">Select your role</option>
+                        <option value="individual">Individual</option>
+                        <option value="community-member">Community Member</option>
+                        <option value="community-admin">Community Admin</option>
+                        <option value="platform-admin">Platform Admin</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-input">
+                        <input type="password" id="password" name="password" required>
+                        <button type="button" class="toggle-password">👁️</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="otp">OTP (Optional)</label>
+                    <div class="otp-input">
+                        <input type="text" id="otp" name="otp">
+                        <button type="button" class="send-otp">Send OTP</button>
+                    </div>
+                </div>
+
+                <div class="form-group switch-group">
+                    <label for="voiceLogin">Voice Login</label>
+                    <label class="switch">
+                        <input type="checkbox" id="voiceLogin" name="voiceLogin">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="submit-button">Login</button>
+                </div>
+
+                <div class="form-footer">
+                    <p>Don't have an account? <a href="registration.html">Register</a></p>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="js/login.js"></script>
+</body>
+</html> 
