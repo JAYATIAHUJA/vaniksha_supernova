@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaniksha - Climate Tech Platform</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body class="light-mode">
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="logo">
+                <h1>Vaniksha</h1>
+            </div>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#dashboard">Dashboard</a>
+                <a href="#resources">Resources</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="header-buttons">
+                <div class="cta-buttons">
+                    <a href="login.html" class="cta-button">Login</a>
+                    <a href="registration.html?type=individual" class="cta-button">Join as Individual</a>
+                    <a href="registration.html?type=community" class="cta-button">Join as Community</a>
+                </div>
+                <div class="theme-toggle">
+                    <button id="themeToggle" aria-label="Toggle theme">
+                        <span class="sun-icon">☀️</span>
+                        <span class="moon-icon">🌙</span>
+                    </button>
+                </div>
+            </div>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero-section">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="animate-text">Greening the Coast. Strengthening the Future.</h1>
+                    <p class="animate-text">AI-powered platform to fight soil erosion, empower communities, and reward verified action.</p>
+                    <div class="hero-buttons">
+                        <button class="cta-button animate-text">Get Started</button>
+                        <button class="secondary-button animate-text">View Impact Map</button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="parallax-image"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="problem" class="problem-section">
+            <h2 class="section-title">Why Coastal Erosion is a Crisis</h2>
+            <div class="problem-content">
+                <div class="problem-text">
+                    <p>India's 7,500+ km coastline is under threat. Over 33% of it is already eroding due to rising sea levels and climate change. Vulnerable communities are losing land, livelihoods, and ecosystems.</p>
+                </div>
+                <div class="problem-stats">
+                    <div class="stat-card">
+                        <h3>40%</h3>
+                        <p>of West Bengal's coast eroding</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>20,000+</h3>
+                        <p>hectares lost in 10 years</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="solution" class="solution-section">
+            <h2 class="section-title">What Makes Vaniksha Different?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🛰️</div>
+                    <h3>AI + Satellite NDVI</h3>
+                    <p>Auto-detect erosion & vegetation change</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📸</div>
+                    <h3>Community Flagging</h3>
+                    <p>Locals can report erosion with photos</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌿</div>
+                    <h3>Plantation Tracking</h3>
+                    <p>Upload evidence, track growth over time</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>AI Feedback</h3>
+                    <p>Get suggestions to improve your planting efforts</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <h3>Blockchain</h3>
+                    <p>Verifies and logs real plantation drives</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎖</div>
+                    <h3>Rewards System</h3>
+                    <p>Earn NFTs and carbon tokens for impact</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="impact" class="impact-section">
+            <h2 class="section-title">Real Action. Real Progress.</h2>
+            <div class="impact-stats">
+                <div class="impact-card">
+                    <div class="impact-icon">🌱</div>
+                    <h3>13,540</h3>
+                    <p>Verified Trees Planted</p>
+                </div>
+                <div class="impact-card">
+                    <div class="impact-icon">🧑‍🤝‍🧑</div>
+                    <h3>243</h3>
+                    <p>Communities Onboarded</p>
+                </div>
+                <div class="impact-card">
+                    <div class="impact-icon">📍</div>
+                    <h3>870</h3>
+                    <p>Erosion-prone areas flagged</p>
+                </div>
+                <div class="impact-card">
+                    <div class="impact-icon">💨</div>
+                    <h3>58,900 kg</h3>
+                    <p>CO₂ Offset Tracked</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="get-involved" class="get-involved-section">
+            <h2 class="section-title">How to Get Involved</h2>
+            <div class="involvement-cards">
+                <div class="involvement-card">
+                    <div class="involvement-icon">👤</div>
+                    <h3>Join as an Individual</h3>
+                    <p>Track & plant trees in your community</p>
+                    <button class="card-button">Get Started</button>
+                </div>
+                <div class="involvement-card">
+                    <div class="involvement-icon">🏘️</div>
+                    <h3>Join as a Community</h3>
+                    <p>Organize local plantation drives</p>
+                    <button class="card-button">Learn More</button>
+                </div>
+                <div class="involvement-card">
+                    <div class="involvement-icon">🤝</div>
+                    <h3>Partner with Us</h3>
+                    <p>Fund verified change as a donor or NGO</p>
+                    <button class="card-button">Contact Us</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h2>Vaniksha</h2>
+                <p>Building a sustainable future through technology</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                    <a href="#faq">FAQ</a>
+                    <a href="#terms">Terms</a>
+                    <a href="#accessibility">Accessibility</a>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <a href="mailto:support@vaniksha.org">support@vaniksha.org</a>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Twitter">🐦</a>
+                        <a href="#" aria-label="LinkedIn">🔗</a>
+                        <a href="#" aria-label="Instagram">📸</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Vaniksha. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/theme.js"></script>
+</body>
+</html>
