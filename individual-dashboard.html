@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Individual Dashboard - Vaniksha</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body class="light-mode">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <h1>Vaniksha</h1>
+            </div>
+            <button class="sidebar-toggle" aria-label="Toggle sidebar">
+                <span class="toggle-icon">☰</span>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="active">
+                    <a href="#dashboard">
+                        <span class="icon">📊</span>
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#map">
+                        <span class="icon">🗺️</span>
+                        <span class="text">Interactive Map</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#submit">
+                        <span class="icon">📸</span>
+                        <span class="text">Submit Plantation</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#rewards">
+                        <span class="icon">🏆</span>
+                        <span class="text">Rewards</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#education">
+                        <span class="icon">📚</span>
+                        <span class="text">Education</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#leaderboard">
+                        <span class="icon">🏅</span>
+                        <span class="text">Leaderboard</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Navbar -->
+        <header class="top-navbar">
+            <div class="search-bar">
+                <input type="text" placeholder="Search...">
+                <button class="search-button">🔍</button>
+            </div>
+            <div class="user-controls">
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+                    <span class="sun-icon">☀️</span>
+                    <span class="moon-icon">🌙</span>
+                </button>
+                <div class="notifications">
+                    <button class="notification-button" aria-label="Notifications">
+                        <span class="icon">🔔</span>
+                        <span class="badge">3</span>
+                    </button>
+                </div>
+                <div class="user-profile">
+                    <img src="assets/profile-placeholder.jpg" alt="Profile" class="profile-pic">
+                    <span class="username">John Doe</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Interactive Map Section -->
+            <section id="map" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Interactive Map</h2>
+                    <div class="map-controls">
+                        <button class="map-control" data-layer="erosion">Erosion Risk</button>
+                        <button class="map-control" data-layer="plantations">Plantation Zones</button>
+                    </div>
+                </div>
+                <div id="map-container" class="map-container"></div>
+            </section>
+
+            <!-- Submit Plantation Section -->
+            <section id="submit" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Submit Plantation</h2>
+                </div>
+                <form id="plantationForm" class="plantation-form">
+                    <div class="form-group">
+                        <label for="media">Upload Photo/Video</label>
+                        <div class="media-upload">
+                            <input type="file" id="media" accept="image/*,video/*" capture="environment">
+                            <div class="upload-preview"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="species">Species</label>
+                            <select id="species" name="species" required>
+                                <option value="">Select Species</option>
+                                <option value="neem">Neem</option>
+                                <option value="bamboo">Bamboo</option>
+                                <option value="mango">Mango</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="method">Plantation Method</label>
+                            <select id="method" name="method" required>
+                                <option value="">Select Method</option>
+                                <option value="direct">Direct Seeding</option>
+                                <option value="sapling">Sapling</option>
+                                <option value="air-layering">Air Layering</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="number" id="quantity" name="quantity" min="1" required>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="submit-button">Submit Plantation</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- AI Feedback Section -->
+            <section id="feedback" class="dashboard-section">
+                <div class="section-header">
+                    <h2>AI Feedback</h2>
+                </div>
+                <div class="feedback-cards">
+                    <div class="feedback-card status-pending">
+                        <h3>Status: Pending</h3>
+                        <p>Your submission is under review</p>
+                    </div>
+                    <div class="feedback-card status-verified">
+                        <h3>Status: Verified</h3>
+                        <p>Great job! Your plantation has been verified</p>
+                    </div>
+                    <div class="feedback-card status-rejected">
+                        <h3>Status: Rejected</h3>
+                        <p>Suggestions: Wrong location, Low density</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Rewards Section -->
+            <section id="rewards" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Your Rewards</h2>
+                </div>
+                <div class="rewards-grid">
+                    <div class="reward-card">
+                        <h3>Carbon Tokens</h3>
+                        <p class="token-amount">1,250</p>
+                        <button class="claim-button">Claim</button>
+                    </div>
+                    <div class="reward-card">
+                        <h3>NFT Badges</h3>
+                        <div class="badges-grid">
+                            <div class="badge">🌱</div>
+                            <div class="badge">🌳</div>
+                            <div class="badge">🏆</div>
+                        </div>
+                    </div>
+                    <div class="reward-card">
+                        <h3>Certificates</h3>
+                        <div class="certificate-actions">
+                            <button class="download-button">Download</button>
+                            <button class="share-button">Share</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Education Section -->
+            <section id="education" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Education & Alerts</h2>
+                </div>
+                <div class="education-grid">
+                    <div class="micro-courses">
+                        <h3>Micro-courses</h3>
+                        <div class="course-list">
+                            <div class="course-card">
+                                <h4>Basic Plantation</h4>
+                                <p>Learn the fundamentals of tree planting</p>
+                                <button class="start-course">Start Course</button>
+                            </div>
+                            <div class="course-card">
+                                <h4>Species Selection</h4>
+                                <p>Choose the right trees for your area</p>
+                                <button class="start-course">Start Course</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alerts">
+                        <h3>Seasonal Alerts</h3>
+                        <div class="alert-list">
+                            <div class="alert-card">
+                                <h4>Monsoon Planting</h4>
+                                <p>Best time to plant: June - August</p>
+                            </div>
+                            <div class="alert-card">
+                                <h4>Local Species</h4>
+                                <p>Recommended: Neem, Bamboo, Mango</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Leaderboard Section -->
+            <section id="leaderboard" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Leaderboard</h2>
+                </div>
+                <div class="leaderboard-content">
+                    <div class="rank-card">
+                        <h3>Your Local Rank</h3>
+                        <p class="rank">#5</p>
+                        <div class="impact-stats">
+                            <div class="stat">
+                                <span class="label">Trees Planted</span>
+                                <span class="value">250</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Carbon Offset</span>
+                                <span class="value">1.2T</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="leaderboard-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Name</th>
+                                    <th>Points</th>
+                                    <th>Impact</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Jane Smith</td>
+                                    <td>1,500</td>
+                                    <td>3.5T CO₂</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Mike Johnson</td>
+                                    <td>1,200</td>
+                                    <td>2.8T CO₂</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Sarah Williams</td>
+                                    <td>1,000</td>
+                                    <td>2.5T CO₂</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="js/dashboard.js"></script>
+    <script src="js/individual-dashboard.js"></script>
+    <script src="js/theme.js"></script>
+</body>
+</html> 

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Admin Dashboard - Vaniksha</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/community-admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body class="light-mode">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <h1>Vaniksha</h1>
+            </div>
+            <button class="sidebar-toggle" aria-label="Toggle sidebar">
+                <span class="toggle-icon">☰</span>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="active">
+                    <a href="#overview">
+                        <span class="icon">📊</span>
+                        <span class="text">Overview</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#bulk-upload">
+                        <span class="icon">📤</span>
+                        <span class="text">Bulk Upload</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#monitoring">
+                        <span class="icon">🌱</span>
+                        <span class="text">AI Monitoring</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#grants">
+                        <span class="icon">💰</span>
+                        <span class="text">Grants</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#members">
+                        <span class="icon">👥</span>
+                        <span class="text">Members</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#blockchain">
+                        <span class="icon">⛓️</span>
+                        <span class="text">Blockchain</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Navbar -->
+        <header class="top-navbar">
+            <div class="search-bar">
+                <input type="text" placeholder="Search...">
+                <button class="search-button">🔍</button>
+            </div>
+            <div class="user-controls">
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+                    <span class="sun-icon">☀️</span>
+                    <span class="moon-icon">🌙</span>
+                </button>
+                <div class="notifications">
+                    <button class="notification-button" aria-label="Notifications">
+                        <span class="icon">🔔</span>
+                        <span class="badge">3</span>
+                    </button>
+                </div>
+                <div class="user-profile">
+                    <img src="assets/profile-placeholder.jpg" alt="Profile" class="profile-pic">
+                    <span class="username">Community Admin</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Overview Stats Section -->
+            <section id="overview" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Overview</h2>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Drives Organized</h3>
+                        <p class="stat-value">12</p>
+                        <p class="stat-change">+2 this month</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>NDVI Progress</h3>
+                        <p class="stat-value">+0.15</p>
+                        <p class="stat-change">Improved vegetation</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Active Members</h3>
+                        <p class="stat-value">45</p>
+                        <p class="stat-change">+5 new members</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>CO₂ Saved</h3>
+                        <p class="stat-value">2.5T</p>
+                        <p class="stat-change">+0.3T this month</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bulk Upload Section -->
+            <section id="bulk-upload" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Bulk Plantation Upload</h2>
+                </div>
+                <form id="bulkUploadForm" class="bulk-upload-form">
+                    <div class="form-group">
+                        <label for="csvFile">Upload CSV File</label>
+                        <input type="file" id="csvFile" accept=".csv" required>
+                        <p class="form-help">Download template CSV</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="plotName">Plot Name</label>
+                        <input type="text" id="plotName" name="plotName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gps">GPS Coordinates</label>
+                        <input type="text" id="gps" name="gps" placeholder="Latitude, Longitude" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="species">Species</label>
+                        <select id="species" name="species" required>
+                            <option value="">Select Species</option>
+                            <option value="neem">Neem</option>
+                            <option value="bamboo">Bamboo</option>
+                            <option value="mango">Mango</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" id="quantity" name="quantity" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="plotImage">Plot Image</label>
+                        <input type="file" id="plotImage" accept="image/*" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-button">Upload Plantation Data</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- AI Monitoring Section -->
+            <section id="monitoring" class="dashboard-section">
+                <div class="section-header">
+                    <h2>AI Monitoring Area</h2>
+                    <div class="monitoring-controls">
+                        <button class="monitoring-control" data-layer="ndvi">NDVI Score</button>
+                        <button class="monitoring-control" data-layer="alerts">Alerts</button>
+                    </div>
+                </div>
+                <div id="monitoring-map" class="map-container"></div>
+                <div class="alerts-list">
+                    <h3>Vegetation Recovery Alerts</h3>
+                    <div class="alert-item">
+                        <span class="alert-icon">⚠️</span>
+                        <div class="alert-content">
+                            <h4>Plot A-12</h4>
+                            <p>Weak vegetation recovery detected</p>
+                        </div>
+                        <button class="action-button">View Details</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Grants Section -->
+            <section id="grants" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Grant Panel</h2>
+                </div>
+                <div class="grants-content">
+                    <div class="proposal-form">
+                        <h3>Upload Proposal</h3>
+                        <form id="proposalForm">
+                            <div class="form-group">
+                                <label for="proposalTitle">Title</label>
+                                <input type="text" id="proposalTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="proposalFile">Proposal Document</label>
+                                <input type="file" id="proposalFile" accept=".pdf,.doc,.docx" required>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="submit-button">Submit Proposal</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="blockchain-export">
+                        <h3>Blockchain Records</h3>
+                        <button class="export-button">Export Verified Logs</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Member Management Section -->
+            <section id="members" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Member Management</h2>
+                    <button class="add-member-button">Add Member</button>
+                </div>
+                <div class="members-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Assigned Parcels</th>
+                                <th>Submissions</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>Contributor</td>
+                                <td>Parcel A-1, A-2</td>
+                                <td>12</td>
+                                <td>
+                                    <button class="edit-button">Edit</button>
+                                    <button class="remove-button">Remove</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Blockchain Records Section -->
+            <section id="blockchain" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Blockchain Records</h2>
+                </div>
+                <div class="blockchain-records">
+                    <div class="record-card">
+                        <h3>Drive #1234</h3>
+                        <p class="hash-id">0x1234...5678</p>
+                        <div class="record-details">
+                            <p>Date: 2024-03-15</p>
+                            <p>Location: Plot A-12</p>
+                            <p>Status: Verified</p>
+                        </div>
+                        <button class="proof-button">Download Public Proof</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="js/community-admin.js"></script>
+    <script src="js/theme.js"></script>
+</body>
+</html> 
