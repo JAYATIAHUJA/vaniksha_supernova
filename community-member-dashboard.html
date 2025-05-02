@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Member Dashboard - Vaniksha</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/community-member.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body class="light-mode">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <h1>Vaniksha</h1>
+            </div>
+            <button class="sidebar-toggle" aria-label="Toggle sidebar">
+                <span class="toggle-icon">☰</span>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="active">
+                    <a href="#assigned-plots">
+                        <span class="icon">🗺️</span>
+                        <span class="text">Assigned Plots</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#upload-proof">
+                        <span class="icon">📸</span>
+                        <span class="text">Upload Proof</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#feedback">
+                        <span class="icon">💬</span>
+                        <span class="text">AI Feedback</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#rewards">
+                        <span class="icon">🏆</span>
+                        <span class="text">Rewards</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#leaderboard">
+                        <span class="icon">📊</span>
+                        <span class="text">Leaderboard</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Navbar -->
+        <header class="top-navbar">
+            <div class="search-bar">
+                <input type="text" placeholder="Search...">
+                <button class="search-button">🔍</button>
+            </div>
+            <div class="user-controls">
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+                    <span class="sun-icon">☀️</span>
+                    <span class="moon-icon">🌙</span>
+                </button>
+                <div class="notifications">
+                    <button class="notification-button" aria-label="Notifications">
+                        <span class="icon">🔔</span>
+                        <span class="badge">3</span>
+                    </button>
+                </div>
+                <div class="user-profile">
+                    <img src="assets/profile-placeholder.jpg" alt="Profile" class="profile-pic">
+                    <span class="username">Community Member</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Assigned Plots Section -->
+            <section id="assigned-plots" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Assigned Plots</h2>
+                </div>
+                <div id="plots-map" class="map-container"></div>
+                <div class="plots-list">
+                    <div class="plot-card">
+                        <h3>Plot A-12</h3>
+                        <div class="plot-details">
+                            <p>Location: 20.5937°N, 78.9629°E</p>
+                            <p>Area: 2.5 acres</p>
+                            <p>Status: Active</p>
+                        </div>
+                        <div class="plot-actions">
+                            <button class="view-button">View Details</button>
+                            <button class="upload-button">Upload Progress</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Upload Proof Section -->
+            <section id="upload-proof" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Upload Plantation Proof</h2>
+                </div>
+                <form id="proofForm" class="proof-form">
+                    <div class="form-group">
+                        <label for="plotSelect">Select Plot</label>
+                        <select id="plotSelect" name="plot" required>
+                            <option value="">Choose Plot</option>
+                            <option value="a-12">Plot A-12</option>
+                            <option value="b-7">Plot B-7</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="mediaUpload">Upload Photo/Video</label>
+                        <div class="media-upload">
+                            <input type="file" id="mediaUpload" accept="image/*,video/*" capture="environment" required>
+                            <div class="upload-preview"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" rows="4" placeholder="Add details about the plantation..."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-button">Submit Proof</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- AI Feedback Section -->
+            <section id="feedback" class="dashboard-section">
+                <div class="section-header">
+                    <h2>AI Feedback & Admin Notes</h2>
+                </div>
+                <div class="feedback-cards">
+                    <div class="feedback-card">
+                        <div class="feedback-header">
+                            <h3>Plot A-12</h3>
+                            <span class="status verified">Verified</span>
+                        </div>
+                        <div class="feedback-content">
+                            <div class="ai-feedback">
+                                <h4>AI Analysis</h4>
+                                <p>Good vegetation growth detected. NDVI score improved by 0.15.</p>
+                            </div>
+                            <div class="admin-notes">
+                                <h4>Admin Notes</h4>
+                                <p>Excellent work on maintaining the plot. Keep up the good work!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feedback-card">
+                        <div class="feedback-header">
+                            <h3>Plot B-7</h3>
+                            <span class="status pending">Pending</span>
+                        </div>
+                        <div class="feedback-content">
+                            <div class="ai-feedback">
+                                <h4>AI Analysis</h4>
+                                <p>Analysis in progress...</p>
+                            </div>
+                            <div class="admin-notes">
+                                <h4>Admin Notes</h4>
+                                <p>Waiting for verification.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Rewards Section -->
+            <section id="rewards" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Your Rewards</h2>
+                </div>
+                <div class="rewards-grid">
+                    <div class="reward-card">
+                        <h3>Carbon Tokens</h3>
+                        <p class="token-amount">1,250</p>
+                        <button class="claim-button">Claim</button>
+                    </div>
+                    <div class="reward-card">
+                        <h3>NFT Badges</h3>
+                        <div class="badges-grid">
+                            <div class="badge">🌱</div>
+                            <div class="badge">🌳</div>
+                            <div class="badge">🏆</div>
+                        </div>
+                    </div>
+                    <div class="reward-card">
+                        <h3>Certificates</h3>
+                        <div class="certificate-actions">
+                            <button class="download-button">Download</button>
+                            <button class="share-button">Share</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Leaderboard Section -->
+            <section id="leaderboard" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Community Leaderboard</h2>
+                </div>
+                <div class="leaderboard-content">
+                    <div class="rank-card">
+                        <h3>Your Rank</h3>
+                        <p class="rank">#5</p>
+                        <div class="impact-stats">
+                            <div class="stat">
+                                <span class="label">Trees Planted</span>
+                                <span class="value">250</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Carbon Offset</span>
+                                <span class="value">1.2T</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="leaderboard-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Name</th>
+                                    <th>Points</th>
+                                    <th>Impact</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Jane Smith</td>
+                                    <td>1,500</td>
+                                    <td>3.5T CO₂</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Mike Johnson</td>
+                                    <td>1,200</td>
+                                    <td>2.8T CO₂</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Sarah Williams</td>
+                                    <td>1,000</td>
+                                    <td>2.5T CO₂</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="js/community-member.js"></script>
+    <script src="js/theme.js"></script>
+</body>
+</html> 
